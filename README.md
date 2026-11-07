@@ -17,6 +17,30 @@ A REST API built with FastAPI to track job and internship applications.
 | GET    | `/health` | Health check                         |
 | GET    | `/about`  | Developer name, purpose, and skills  |
 
+### Applications (in-memory storage, resets on restart)
+
+| Method | Path                    | Description                              | Success | Errors   |
+|--------|-------------------------|------------------------------------------|---------|----------|
+| POST   | `/applications`         | Create an application                    | 201     | 422      |
+| GET    | `/applications`         | List all applications                    | 200     | -        |
+| GET    | `/applications/{id}`    | Get one application                      | 200     | 404      |
+| PUT    | `/applications/{id}`    | Update only the fields you send          | 200     | 404, 422 |
+| DELETE | `/applications/{id}`    | Delete an application                    | 204     | 404      |
+
+`status` must be one of: `Applied`, `Interview`, `Offer`, `Rejected`.
+
+## Project Structure
+
+```
+app/
+  __init__.py
+  main.py              # FastAPI app, /, /health, /about
+  schemas.py           # Pydantic models
+  routers/
+    __init__.py
+    applications.py    # CRUD endpoints
+```
+
 ## How to Run (Windows)
 
 ```powershell
@@ -30,7 +54,7 @@ venv\Scripts\activate
 pip install -r requirements.txt
 
 # 4. Start the server
-uvicorn main:app --reload --port 8001
+uvicorn app.main:app --reload --port 8001
 ```
 
 Then open:
@@ -43,7 +67,7 @@ Then open:
 ## Progress
 
 - [x] Step 1: Project setup with FastAPI and basic endpoints
-- [ ] Step 2
+- [x] Step 2: CRUD endpoints for applications with Pydantic validation (in-memory)
 - [ ] Step 3
 - [ ] Step 4
 - [ ] Step 5
