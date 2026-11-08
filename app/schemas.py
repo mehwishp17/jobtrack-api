@@ -1,5 +1,5 @@
 # date type is used for applied_date (a real calendar date like 2026-11-08)
-from datetime import date
+from datetime import date, datetime
 # Enum lets us define a fixed list of allowed values
 from enum import Enum
 # Optional means "this value may be missing (None)"
@@ -7,7 +7,7 @@ from typing import Optional
 
 # BaseModel is the Pydantic class that gives us automatic data validation
 # Field lets us add extra rules (like min length) to a single field
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 # The only allowed statuses. Anything else (like "Maybe") is rejected with a 422 error
@@ -53,5 +53,11 @@ class ApplicationUpdate(BaseModel):
 # Shape of the data we send BACK to the client: everything in Create, plus the id.
 # Inheriting from ApplicationCreate avoids copy-pasting all the fields
 class ApplicationOut(ApplicationCreate):
-    # The unique number the server gave this application
+    # from_attributes=True lets Pydantic read data from a SQLAlchemy object
+    # (e.g. obj.company) and not only from a dict
+    model_config = ConfigDict(from_attributes=True)
+
+    # The unique number the database gave this application
     id: int
+    # When the row was created (filled in by the database)
+    created_at: datetime
