@@ -37,6 +37,8 @@ class Application(Base):
     applied_date: Mapped[date] = mapped_column(Date, nullable=False)
     # Optional long text (Text has no length limit)
     notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    # Optional link to the job posting (max 500 chars); nullable so old rows can stay empty
+    job_link: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
     # When the row was created; the DATABASE fills it with its current time
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False

@@ -1,18 +1,9 @@
 # Import the FastAPI class - the main tool that builds our web API
 from fastapi import FastAPI
 
-# Import the database engine and the Base class that knows about all our tables
-from .database import Base, engine
-
-# Importing models makes sure SQLAlchemy knows the "applications" table exists
-from . import models  # noqa: F401
-
 # Import the router that holds all the /applications endpoints
+# (The database structure is now managed ONLY by Alembic: run "alembic upgrade head")
 from .routers import applications
-
-# Create any missing tables when the app starts (Alembic will replace this in Step 4).
-# Tables that already exist are left alone, so your data is safe
-Base.metadata.create_all(bind=engine)
 
 # Create the app object. The title shows up in the auto-generated docs page (/docs)
 app = FastAPI(title="JobTrack API")

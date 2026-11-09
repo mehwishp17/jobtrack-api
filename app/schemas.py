@@ -35,6 +35,8 @@ class ApplicationCreate(BaseModel):
     applied_date: date
     # Optional free-text notes
     notes: Optional[str] = None
+    # Optional link to the job posting, at most 500 characters (matches the database column)
+    job_link: Optional[str] = Field(default=None, max_length=500)
 
 
 # Shape of the data a client sends when UPDATING (PUT). Every field is optional,
@@ -48,6 +50,7 @@ class ApplicationUpdate(BaseModel):
     status: Optional[ApplicationStatus] = None
     applied_date: Optional[date] = None
     notes: Optional[str] = None
+    job_link: Optional[str] = Field(default=None, max_length=500)
 
 
 # Shape of the data we send BACK to the client: everything in Create, plus the id.
